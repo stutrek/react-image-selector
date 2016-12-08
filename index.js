@@ -24,9 +24,21 @@ export class Image extends React.Component {
 
 		var img = ReactDOM.findDOMNode(this);
 		if (this.props.responsive) {
-			watchImage(img, cuts);
+			this.watcher = watchImage(img, cuts);
 		} else {
 			addSource(img, 'src', cuts);
+		}
+	}
+
+	componentDidUpdate () {
+		if (this.watcher) {
+			this.watcher.recalculate();
+		}
+	}
+
+	componentWillUnmount () {
+		if (this.watcher) {
+			this.watcher.destroy();
 		}
 	}
 
